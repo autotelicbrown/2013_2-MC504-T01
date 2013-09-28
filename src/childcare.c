@@ -1,7 +1,7 @@
 #include "childcare.h"
 
 void * Child( void * v ) {
-	// Child problem thread
+	// TODO Child problem thread
 	// Call Add/Remove Waiting/Active Child to update drawing
 	// see include/sdldrawing.h
 	
@@ -18,7 +18,7 @@ void * Child( void * v ) {
 }
 
 void * Adult( void * v ) {
-	// Adult problem thread
+	// TODO Adult problem thread
 	// Call Add/Remove Waiting/Active Adult to update drawing
 	// see include/sdldrawing.h
 
@@ -30,22 +30,27 @@ void * Adult( void * v ) {
 	i = Screen_AddWaitingAdult();
 	SDL_Delay( 2000 );
 	Screen_RemoveWaitingAdult( i );
+
        	return 0;
 }
 
 int GetWaitingChildTotal() {
+	// TODO Add synchonized access to the number of waiting children
        	return 1;
 }
 
 int GetActiveChildTotal() {
+	// TODO Add synchonized access to the number of active children
        	return 2;
 }
 
 int GetWaitingAdultTotal() {
+	// TODO Add synchonized access to the number of waiting adults
        	return 3;
 }
 
 int GetActiveAdultTotal() {
+	// TODO Add synchonized access to the number of active adults
        	return 7;
 }
 

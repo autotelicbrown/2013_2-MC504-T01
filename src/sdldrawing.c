@@ -108,9 +108,6 @@ void DrawAndEventLoop() {
 	SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
 	SDL_RenderClear( renderer );
 
-	// Set fixed background TODO
-//	SDL_RenderCopy( renderer, background_tx, NULL, NULL );
-
 	// Set waiting children
 	basex = WAITING_CHILD_BASEX;
 	basey = WAITING_CHILD_BASEY;
@@ -323,7 +320,6 @@ void CleanMySDL() {
 }
 
 // Series of synchronized changes on the drawing matrix references
-// Extra TODO Add some logic to associate random positions for new elements
 
 int  Screen_AddWaitingChild() {
 	int pos, i, j;
