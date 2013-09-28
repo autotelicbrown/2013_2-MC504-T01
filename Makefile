@@ -37,10 +37,13 @@ $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 $(EXE): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
-
-
 .PHONY : clean
 clean:
 	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~
 	rm $(EXE)
+	rmdir $(ODIR)
 
+$(OBJ): | $(ODIR)
+
+$(ODIR):
+	mkdir $(ODIR)
