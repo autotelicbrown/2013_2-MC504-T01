@@ -1,56 +1,104 @@
 #include "childcare.h"
+static sem_t mutex, adultQueue, childQueue;
+static int children = 0, waiting = 0, adults = 0, leaving = 0;
 
-void * Child( void * v ) {
-	// TODO Child problem thread
-	// Call Add/Remove Waiting/Active Child to update drawing
-	// see include/sdldrawing.h
-	
-	// TEST ONLY CODE - example of interaction with drawing stuff
-	int i;
-	i = Screen_AddWaitingChild();
-	SDL_Delay( 2000 );
-	Screen_RemoveWaitingChild( i );
-	i = Screen_AddActiveChild();
-	SDL_Delay( 6000 );
-	Screen_RemoveActiveChild( i );
-
-       	return 0;
+void ChildcareInit ()
+{
+	sem_init (&mutex, 0, 1);
+	sem_init (&adultQueue, 0, 0);
+	sem_init (&childQueue, 0, 0);
 }
 
-void * Adult( void * v ) {
-	// TODO Adult problem thread
-	// Call Add/Remove Waiting/Active Adult to update drawing
-	// see include/sdldrawing.h
-
-	// TEST ONLY CODE - example of interaction with drawing stuff
+void * Child (void *v) {
 	int i;
-	i = Screen_AddActiveAdult();
-	SDL_Delay( 6000 );
-	Screen_RemoveActiveAdult( i );
-	i = Screen_AddWaitingAdult();
-	SDL_Delay( 2000 );
-	Screen_RemoveWaitingAdult( i );
+	sem_wait(&mutex);
+	if (children < 3 * adults) {
+		children++;
+		sem_post(&mutex);
+	}
+	else {
+		waiting++;
+		sem_post(&mutex);
+		i = Screen_AddWaitingChild();
+		sem_wait(&childQueue);
+		Screen_RemoveWaitingChild( i );
+	}
 
-       	return 0;
+	i = Screen_AddActiveChild();
+	SDL_Delay( 2000 );
+		
+	sem_wait(&mutex);
+	children--;
+	if (leaving && children <= 3*(adults-1)) {
+		leaving--;
+		adults--;
+		sem_post(&adultQueue);
+	}
+	else if (waiting) {
+		waiting--;
+		children++;
+		sem_post(&childQueue);
+	}		
+	sem_post(&mutex);
+
+	Screen_RemoveActiveChild( i );
+
+	return 0;
+}
+
+void * Adult (void *v) {
+	int i;
+	sem_wait(&mutex);
+	if (leaving) {
+		leaving--;
+		sem_post(&adultQueue);
+	}
+	else {
+		adults++;
+		for (i = 0; i < 3; i++) {
+			if (waiting) {
+				waiting--;
+				children++;
+				sem_post(&childQueue);
+			}
+			else
+				break;
+		}
+	}
+	sem_post(&mutex);
+	i = Screen_AddActiveAdult();
+
+	SDL_Delay( 2000 );
+
+	sem_wait(&mutex);
+	Screen_RemoveActiveAdult( i );
+	if (children <= 3*(adults-1)) {
+		adults--;
+		sem_post(&mutex);
+	}
+	else {
+		leaving++;
+		sem_post(&mutex);
+		i = Screen_AddWaitingAdult();
+		sem_wait(&adultQueue);
+		Screen_RemoveWaitingAdult( i );
+	}
+
+	return 0;
 }
 
 int GetWaitingChildTotal() {
-	// TODO Add synchonized access to the number of waiting children
-       	return 1;
+       	return waiting;
 }
 
 int GetActiveChildTotal() {
-	// TODO Add synchonized access to the number of active children
-       	return 2;
+       	return children;
 }
 
 int GetWaitingAdultTotal() {
-	// TODO Add synchonized access to the number of waiting adults
-       	return 3;
+       	return leaving;
 }
 
 int GetActiveAdultTotal() {
-	// TODO Add synchonized access to the number of active adults
-       	return 7;
+       	return adults;
 }
-

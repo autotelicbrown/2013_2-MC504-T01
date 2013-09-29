@@ -7,7 +7,7 @@ LDIR := lib
 SDIR := src
 
 #SDL lib
-SDL_LIB = -LSDL/x86 -LSDL/x64 -lSDL2 -lSDL2_image -lSDL2_ttf
+SDL_LIB = -L/usr/local/lib/ -lSDL2 -lSDL2_image -lSDL2_ttf -Wl,-rpath=/usr/local/lib
 SDL_INCLUDE = -ISDL
 
 ##Debug Compiling flags
