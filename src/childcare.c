@@ -49,11 +49,8 @@ void * Child (void *v) {
 void * Adult (void *v) {
 	int i;
 	sem_wait(&mutex);
-	if (leaving) {
-		leaving--;
-		sem_post(&adultQueue);
-	}
-	else {
+
+	if (waiting) {
 		adults++;
 		for (i = 0; i < 3; i++) {
 			if (waiting) {
@@ -65,6 +62,11 @@ void * Adult (void *v) {
 				break;
 		}
 	}
+	else if (leaving) {
+		leaving--;
+		sem_post(&adultQueue);
+	}
+
 	sem_post(&mutex);
 	i = Screen_AddActiveAdult();
 
