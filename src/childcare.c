@@ -25,8 +25,8 @@ void * Child (void *v) {
 	}
 
 	i = Screen_AddActiveChild();
-	SDL_Delay( 12000 );
-		
+	SDL_Delay( 4000 );
+
 	sem_wait(&mutex);
 	children--;
 	if (leaving && children <= 3*(adults-1)) {
@@ -38,7 +38,7 @@ void * Child (void *v) {
 		waiting--;
 		children++;
 		sem_post(&childQueue);
-	}		
+	}
 	sem_post(&mutex);
 
 	Screen_RemoveActiveChild( i );
@@ -68,7 +68,7 @@ void * Adult (void *v) {
 	sem_post(&mutex);
 	i = Screen_AddActiveAdult();
 
-	SDL_Delay( 7000 );
+	SDL_Delay( 8888 );
 
 	sem_wait(&mutex);
 	Screen_RemoveActiveAdult( i );
@@ -100,5 +100,5 @@ int GetWaitingAdultTotal() {
 }
 
 int GetActiveAdultTotal() {
-       	return adults;
+       	return adults - leaving;
 }
