@@ -49,9 +49,9 @@ void * Child (void *v) {
 void * Adult (void *v) {
 	int i;
 	sem_wait(&mutex);
+	adults++;
 
 	if (waiting) {
-		adults++;
 		for (i = 0; i < 3; i++) {
 			if (waiting) {
 				waiting--;
@@ -63,6 +63,7 @@ void * Adult (void *v) {
 		}
 	}
 	else if (leaving) {
+		adults--;
 		leaving--;
 		sem_post(&adultQueue);
 	}
