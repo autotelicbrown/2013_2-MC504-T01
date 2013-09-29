@@ -1,2 +1,7 @@
 *.[oa]
 *~
+ChildCare
+SDL/*/libSDL2-2.0.so.0
+SDL/*/libSDL2.so
+SDL/*/libSDL2_ttf-2.0.so.0
+SDL/*/libSDL2_ttf.so
