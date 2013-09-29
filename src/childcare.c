@@ -25,7 +25,7 @@ void * Child (void *v) {
 	}
 
 	i = Screen_AddActiveChild();
-	SDL_Delay( 2000 );
+	SDL_Delay( 12000 );
 		
 	sem_wait(&mutex);
 	children--;
@@ -68,7 +68,7 @@ void * Adult (void *v) {
 	sem_post(&mutex);
 	i = Screen_AddActiveAdult();
 
-	SDL_Delay( 2000 );
+	SDL_Delay( 7000 );
 
 	sem_wait(&mutex);
 	Screen_RemoveActiveAdult( i );

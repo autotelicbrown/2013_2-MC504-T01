@@ -6,6 +6,7 @@
 #include <time.h>
 #include "SDL2/SDL.h"
 #include "sdldrawing.h"
+#include "childcare.h"
 
 struct MakerParams {
 	int minMakeDelay;
