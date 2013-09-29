@@ -52,7 +52,11 @@ int main( int argc, char* argv[] ) {
 
 	if( argc != 5 ) {
 		fprintf( stderr, 
-		  "Usage: ChildCare minMakeDelay(child) maxMakeDelay(child) minMakeDelay(adult) maxMakeDelay(adult)\n");
+		  "Usage: ChildCare minMakeDelay(child) maxMakeDelay(child)\\\n                 minMakeDelay(adult) maxMakeDelay(adult)\n");
+		fprintf( stderr,
+			"All delays are in ms and must keep the form:\n" );
+		fprintf( stderr,
+			"  0 < minMakeDelay < maxMakeDelay\n" );
 		return 1;
 	}
 
